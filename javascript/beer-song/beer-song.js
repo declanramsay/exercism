@@ -1,13 +1,35 @@
 var BeerSong = function() {};
 
-var lyric = function(num) {
-  newNum = num - 1;
-  return num + ' bottles of beer on the wall, ' + num + ' bottles of beer.\nTake one down and pass it around, ' + newNum + ' bottles of beer on the wall.\n';
+var pluralise = function(num, string) {
+  return num !== 1 ? string + 's' : string;
 };
 
-BeerSong.prototype.verse = function() {
-  for(var i = 0; i < arguments.length; i++) {
-    return lyric(arguments[i]);
+var takeItDown = function(num) {
+  if(!num) {
+    return 'Go to the store and buy some more,';
   }
+  if(num === 1) {
+    return 'Take it down and pass it around,';
+  }
+  return 'Take one down and pass it around,';
+};
+
+var lyric = function(num) {
+  var newNum = !num ? 99 : num - 1;
+  newNum = !newNum ? 'no more' : newNum;
+  return (num ? num : 'No more') + ' ' + pluralise(num, 'bottle') + ' of beer on the wall, ' + (num ? num : 'no more') + ' ' + pluralise(num, 'bottle') + ' of beer.\n' + takeItDown(num) + ' ' + newNum + ' bottles of beer on the wall.\n';
+};
+
+BeerSong.prototype.verse = function(num) {
+  return lyric(num);
+};
+
+BeerSong.prototype.sing = function() {
+  var verses = [];
+  for(var i = 0; i < arguments.length; i++) {
+    verses.push(lyric(arguments[i]));
+  }
+
+  return verses;
 };
 module.exports = BeerSong;
