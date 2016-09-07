@@ -2,12 +2,11 @@ var Sentence = function(string) {
   this.sentence = string;
 };
 
-Sentence.prototype.isPangram = function() {
-  if(!this.sentence) {
-    return false;
-  }
+var REGEX = /([a-z])(?!.*\1)/g;
 
-  return this.sentence;
+Sentence.prototype.isPangram = function() {
+  var sentence = this.sentence.toLowerCase();
+  return (sentence.match(REGEX) || []).length === 26;
 };
 
 module.exports = Sentence;
