@@ -17,7 +17,7 @@ var takeItDown = function(num) {
 var lyric = function(num) {
   var newNum = !num ? 99 : num - 1;
   newNum = !newNum ? 'no more' : newNum;
-  return (num ? num : 'No more') + ' ' + pluralise(num, 'bottle') + ' of beer on the wall, ' + (num ? num : 'no more') + ' ' + pluralise(num, 'bottle') + ' of beer.\n' + takeItDown(num) + ' ' + newNum + ' bottles of beer on the wall.\n';
+  return (num ? num : 'No more') + ' ' + pluralise(num, 'bottle') + ' of beer on the wall, ' + (num ? num : 'no more') + ' ' + pluralise(num, 'bottle') + ' of beer.\n' + takeItDown(num) + ' ' + newNum + ' ' + pluralise(newNum, 'bottle') + ' of beer on the wall.\n';
 };
 
 BeerSong.prototype.verse = function(num) {
@@ -25,11 +25,20 @@ BeerSong.prototype.verse = function(num) {
 };
 
 BeerSong.prototype.sing = function() {
-  var verses = [];
-  for(var i = 0; i < arguments.length; i++) {
-    verses.push(lyric(arguments[i]));
+  var secondValue = arguments[1] ? arguments[1] : 0;
+  var range = arguments[0] - secondValue + 1;
+
+  var rangeArr = [];
+  for(var n = 0; n < range; n++) {
+    rangeArr.push(arguments[0]);
+    arguments[0]--;
   }
 
-  return verses;
+  var verses = [];
+  for(var i = 0; i < rangeArr.length; i++) {
+    verses.push(lyric(rangeArr[i]) + (i !== rangeArr.length - 1 ? '\n' : ''));
+  }
+
+  return verses.join('');
 };
 module.exports = BeerSong;
